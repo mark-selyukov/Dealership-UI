@@ -17,6 +17,8 @@ const inAppFetcher = async (url) => {
   return { errorMessage: `There was an error with the url: ${url}` };
 };
 
+//First parameter is the actual api that needs to be called
+//Second parameter is the route to the api that needs to be called
 const fetcher = async (api, route) => {
   const url = routes(api) + route;
   const response = await fetchHelper(url);
