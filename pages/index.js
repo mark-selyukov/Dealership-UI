@@ -3,11 +3,15 @@ import { fetcher } from "../utils/fetcher";
 
 export default function Home() {
   const [item, setItem] = useState("");
-
-  useEffect(async () => {
-    const response = await fetcher("dealership", "dealership");
-    setItem(response.item);
+  useEffect(() => {
+    fetcher("dealership", "dealership").then((item) => {
+      setItem(item);
+    });
   });
+
+  if (!item) {
+    return <div>Loading Dealership Api</div>;
+  }
 
   return <div>{item}</div>;
 }

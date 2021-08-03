@@ -27,7 +27,13 @@ const fetcher = async (api, route) => {
 };
 
 const fetchHelper = async (url) => {
-  return fetch(url).then((response) => response.json());
+  try {
+    const response = await fetch(url);
+    const json = await response.json();
+    return json;
+  } catch (err) {
+    console.log("error");
+  }
 };
 
 export { fetcher, inAppFetcher };
