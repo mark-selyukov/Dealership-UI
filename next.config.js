@@ -22,6 +22,9 @@ module.exports = (phase) => {
     console.log("Prod deployment");
   }
 
+  console.log('process.env.DEALERSHIPAPI')
+  console.log(process.env.DEALERSHIPAPI)
+
   // next.config.js object
   return {
     env: {
