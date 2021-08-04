@@ -17,6 +17,8 @@ container:
     - docker build -t $TAG_NAME .
     - docker push $TAG_NAME
     - docker inspect --format='{{index .RepoDigests 0}}' $TAG_NAME > .image_name
+    - echo This is the value for DEALERSHIPAPI
+    - echo $DEALERSHIPAPI
   artifacts:
     paths:
       - .image_name
