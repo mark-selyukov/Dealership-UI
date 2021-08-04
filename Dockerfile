@@ -10,13 +10,13 @@ FROM node:alpine AS builder
 WORKDIR /app
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
-ARG DEALERSHIPAPI
 RUN yarn build && yarn install --production --ignore-scripts --prefer-offline
 
 # Production image, copy all the files and run next
 FROM node:alpine AS runner
 WORKDIR /app
 ENV NODE_ENV production
+ENV DEALERSHIPAPI $DEALERSHIPAPI
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 # You only need to copy next.config.js if you are NOT using the default configuration
@@ -25,7 +25,6 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
-ARG DEALERSHIPAPI
 USER nextjs
 EXPOSE 3000
 CMD ["yarn", "start"]
