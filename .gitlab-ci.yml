@@ -14,7 +14,7 @@ container:
   script:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
     - export TAG_NAME=$CI_REGISTRY_IMAGE:${CI_COMMIT_TAG:-$CI_COMMIT_REF_NAME}
-    - docker build --build-arg DEALERSHIPAPI=$DEALERSHIPAPI -t $TAG_NAME .
+    - docker build --build-arg DEALERSHIPAPI=$DEALERSHIPAPI DEALERSHIPAPI_TEST=${DEALERSHIPAPI} -t $TAG_NAME .
     - docker push $TAG_NAME
     - docker inspect --format='{{index .RepoDigests 0}}' $TAG_NAME > .image_name
   artifacts:
