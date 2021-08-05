@@ -10,8 +10,10 @@ FROM node:alpine AS builder
 WORKDIR /app
 COPY . .
 COPY --from=deps /app/node_modules ./node_modules
-ENV TEST_THINGS_1=$DEALERSHIPAPI
-ENV TEST_THINGS_2=$DEALERSHIPAPI_TEST
+ARG TEST_THINGS_1
+ARG TEST_THINGS_2
+ENV DEALERSHIPAPI=$TEST_THINGS_1
+ENV DEALERSHIPAPI_TEST=$TEST_THINGS_2
 RUN printenv  
 RUN yarn build && yarn install --production --ignore-scripts --prefer-offline
 
