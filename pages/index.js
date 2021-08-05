@@ -7,11 +7,11 @@ export default function Home() {
     fetcher("dealership", "dealership").then((item) => {
       setItem(item);
     });
-  });
+  }, []);
 
   if (!item) {
     return <div>Loading Dealership Api</div>;
   }
 
-  return <div>{item}</div>;
+  return <div>{item.item}</div>;
 }
