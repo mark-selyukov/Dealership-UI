@@ -16,6 +16,8 @@ RUN yarn build && yarn install --production --ignore-scripts --prefer-offline
 FROM node:alpine AS runner
 WORKDIR /app
 ENV NODE_ENV production
+ENV DEALERSHIPAPI $DEALERSHIPAPI
+#ENV DEALERSHIPAPI https://dealership.selyslab.com/api/
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 # You only need to copy next.config.js if you are NOT using the default configuration
