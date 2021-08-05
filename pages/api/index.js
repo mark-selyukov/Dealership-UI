@@ -1,1 +1,1 @@
-export { dealership } from "../api/dealership";
+export { dealership } from "./dealership";
