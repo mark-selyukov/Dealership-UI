@@ -36,4 +36,4 @@ deploy:
     - tar -xvf helm-v3.6.3-linux-amd64.tar.gz
     - mv linux-amd64/helm .
   script:
-    - ./helm upgrade dealership-ui ./charts/dealership-ui --install --set image_name=$(cat .image_name)
+    - ./helm upgrade dealership-ui ./charts/dealership-ui --install --set image_name=$(cat .image_name) --history-max 4
