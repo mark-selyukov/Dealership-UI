@@ -1,1 +1,0 @@
-export { dealership } from "./dealership";
