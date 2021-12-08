@@ -67,7 +67,7 @@ const EnterSearchBar = ({ setItem, children }) => {
       <Box borderWidth="1px" borderRadius="lg" w="100%" p={4} color="black">
         <List spacing={2}>
           {searchTerms.map((item) => {
-            if (item.includes(value)) {
+            if (item.includes(value.toLocaleLowerCase())) {
               return (
                 <ListItem
                   onClick={() => search(item)}
