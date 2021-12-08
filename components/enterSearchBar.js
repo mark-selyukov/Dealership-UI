@@ -10,34 +10,57 @@ import {
   InputLeftElement,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+const searchTerms = [
+  "a",
+  "as",
+  "asd",
+  "asdf",
+  "asdff",
+  "sadf",
+  "asdfasdfsd",
+  "asd",
+  "asdfasdf",
+  "dsfasdasdf",
+  "asdfweqds",
+  "asdfasd",
+  "asdfasdd",
+  "asdfasdfd",
+  "asdfasdfasdasdfasddddsadf",
+  "asedfhjpawoqieuyfhajskdnf",
+  "oiewqurpoiuwefpijdspfihasdpfh",
+];
 
 const EnterSearchBar = ({ setItem, children }) => {
-  const searchTerms = [
-    "a",
-    "as",
-    "asd",
-    "asdf",
-    "asdff",
-    "sadf",
-    "asdfasdfsd",
-    "asd",
-    "asdfasdf",
-    "dsfasdasdf",
-    "asdfweqds",
-    "asdfasd",
-    "asdfasdd",
-    "asdfasdfd",
-    "asdfasdfasdasdfasddddsadf",
-    "asedfhjpawoqieuyfhajskdnf",
-    "oiewqurpoiuwefpijdspfihasdpfh",
-  ];
-
   const [value, setValue] = useState("");
   const handleValueChange = (event) => setValue(event.target.value);
 
+  const [searchValues, setSearchValues] = useState([]);
+  const [idSearchValues, setIsSearchValues] = useState(true);
+
+  useEffect(() => {
+    const newSearchValues = [];
+
+    searchTerms.forEach((item) => {
+      if (item.includes(value.toLocaleLowerCase()) && value != "") {
+        newSearchValues.push(
+          <ListItem onClick={() => search(item)} _hover={{ cursor: "pointer" }}>
+            <ListIcon as={SearchIcon} />
+            {item}
+          </ListItem>
+        );
+      }
+    });
+
+    setSearchValues(newSearchValues);
+    setIsSearchValues(!(newSearchValues.length > 0));
+  }, [value, setValue, idSearchValues, setIsSearchValues]);
+
   const search = (value) => {
-    if (value.length > 0) setItem({ item: value });
+    if (value.length > 0) {
+      setItem({ item: value });
+    }
   };
 
   const enterSearch = (e) => {
@@ -60,26 +83,19 @@ const EnterSearchBar = ({ setItem, children }) => {
   });
 
   const searchDropDown = () => {
-    if (value.length <= 0) {
+    if (searchValues.length <= 0) {
       return null;
     }
     return (
-      <Box borderWidth="1px" borderRadius="lg" w="100%" p={4} color="black">
-        <List spacing={2}>
-          {searchTerms.map((item) => {
-            if (item.includes(value.toLocaleLowerCase())) {
-              return (
-                <ListItem
-                  onClick={() => search(item)}
-                  _hover={{ cursor: "pointer" }}
-                >
-                  <ListIcon as={SearchIcon} />
-                  {item}
-                </ListItem>
-              );
-            }
-          })}
-        </List>
+      <Box
+        borderWidth="1px"
+        borderRadius="lg"
+        w="100%"
+        p={4}
+        color="black"
+        hidden={idSearchValues}
+      >
+        <List spacing={2}>{searchValues}</List>
       </Box>
     );
   };

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Container, Text } from "@chakra-ui/react";
 
 import { fetcher } from "../utils/fetcher";
-import EnterSearchBar from "../components/enterSearchBar";
+import EnterSearchBar from "../components/EnterSearchBar";
 
 const Home = () => {
   const [item, setItem] = useState("");
