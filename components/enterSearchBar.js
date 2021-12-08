@@ -20,7 +20,7 @@ const searchTerms = [
   "asdff",
   "sadf",
   "asdfasdfsd",
-  "asd",
+  "asdfopiyasdfhkjlj",
   "asdfasdf",
   "dsfasdasdf",
   "asdfweqds",
@@ -37,7 +37,6 @@ const EnterSearchBar = ({ setItem, children }) => {
   const handleValueChange = (event) => setValue(event.target.value);
 
   const [searchValues, setSearchValues] = useState([]);
-  const [idSearchValues, setIsSearchValues] = useState(true);
 
   useEffect(() => {
     const newSearchValues = [];
@@ -45,7 +44,11 @@ const EnterSearchBar = ({ setItem, children }) => {
     searchTerms.forEach((item) => {
       if (item.includes(value.toLocaleLowerCase()) && value != "") {
         newSearchValues.push(
-          <ListItem onClick={() => search(item)} _hover={{ cursor: "pointer" }}>
+          <ListItem
+            onClick={() => search(item)}
+            _hover={{ cursor: "pointer" }}
+            key={item}
+          >
             <ListIcon as={SearchIcon} />
             {item}
           </ListItem>
@@ -54,8 +57,7 @@ const EnterSearchBar = ({ setItem, children }) => {
     });
 
     setSearchValues(newSearchValues);
-    setIsSearchValues(!(newSearchValues.length > 0));
-  }, [value, setValue, idSearchValues, setIsSearchValues]);
+  }, [value, setValue, setSearchValues]);
 
   const search = (value) => {
     if (value.length > 0) {
@@ -93,7 +95,7 @@ const EnterSearchBar = ({ setItem, children }) => {
         w="100%"
         p={4}
         color="black"
-        hidden={idSearchValues}
+        hidden={searchValues.length <= 0}
       >
         <List spacing={2}>{searchValues}</List>
       </Box>
@@ -108,7 +110,7 @@ const EnterSearchBar = ({ setItem, children }) => {
             aria-label=""
             variant="ghost"
             icon={<SearchIcon />}
-            _hover={"ghost"}
+            _hover="ghost"
           />
         </InputLeftElement>
         {enterInput}

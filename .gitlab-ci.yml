@@ -21,10 +21,6 @@ container:
     paths:
       - .image_name
     expire_in: 30 days
-  only:
-    - develop
-    - main
-    - tag
 
 deploy:
   stage: deploy
@@ -37,3 +33,7 @@ deploy:
     - mv linux-amd64/helm .
   script:
     - ./helm upgrade dealership-ui ./charts/dealership-ui --install --set image_name=$(cat .image_name) --history-max 2
+  only:
+    - develop
+    - main
+    - tag

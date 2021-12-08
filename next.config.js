@@ -23,5 +23,6 @@ module.exports = (phase) => {
     env: {
       DEALERSHIPAPI: process.env.DEALERSHIPAPI,
     },
+    reactStrictMode: true,
   };
 };
