@@ -1,17 +1,16 @@
 import {
-  InputGroup,
-  InputLeftElement,
-  Input,
-  IconButton,
   Box,
   List,
+  Input,
+  Button,
   ListItem,
   ListIcon,
-  Button,
+  IconButton,
+  InputGroup,
+  InputLeftElement,
 } from "@chakra-ui/react";
-import React from "react";
 import { SearchIcon } from "@chakra-ui/icons";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const EnterSearchBar = ({ setItem, children }) => {
   const searchTerms = [
@@ -29,13 +28,16 @@ const EnterSearchBar = ({ setItem, children }) => {
     "asdfasd",
     "asdfasdd",
     "asdfasdfd",
+    "asdfasdfasdasdfasddddsadf",
+    "asedfhjpawoqieuyfhajskdnf",
+    "oiewqurpoiuwefpijdspfihasdpfh",
   ];
 
   const [value, setValue] = useState("");
   const handleValueChange = (event) => setValue(event.target.value);
 
   const search = (value) => {
-    setItem({ item: value });
+    if (value.length > 0) setItem({ item: value });
   };
 
   const enterSearch = (e) => {
@@ -67,7 +69,10 @@ const EnterSearchBar = ({ setItem, children }) => {
           {searchTerms.map((item) => {
             if (item.includes(value)) {
               return (
-                <ListItem onClick={() => search(item)}>
+                <ListItem
+                  onClick={() => search(item)}
+                  _hover={{ cursor: "pointer" }}
+                >
                   <ListIcon as={SearchIcon} />
                   {item}
                 </ListItem>

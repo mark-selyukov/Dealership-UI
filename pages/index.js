@@ -1,8 +1,9 @@
+import { Input } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { Container, Text } from "@chakra-ui/react";
+
 import { fetcher } from "../utils/fetcher";
 import EnterSearchBar from "../components/enterSearchBar";
-import { Container, Text } from "@chakra-ui/react";
-import { Input } from "@chakra-ui/react";
 
 const Home = () => {
   const [item, setItem] = useState("");
