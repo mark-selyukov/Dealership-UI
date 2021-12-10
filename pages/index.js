@@ -1,9 +1,10 @@
-import { Input } from "@chakra-ui/react";
+import { Input, Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { Container, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 
 import { fetcher } from "../utils/fetcher";
-import MenuBar from "../components/MenuBar";
+
+import MenuedPage from "../components/MenuedPage";
 import EnterSearchBar from "../components/EnterSearchBar";
 
 const Home = () => {
@@ -20,43 +21,17 @@ const Home = () => {
   }
 
   return (
-    <>
-      <MenuBar />
-      <Container maxW="container.xl" centerContent>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <Text fontSize="6xl">{item.item}</Text>
-        <EnterSearchBar setItem={setItem}>
-          <Input variant="filled" />
-        </EnterSearchBar>
-      </Container>
-    </>
+    <MenuedPage>
+      <Text fontSize="6xl" zIndex={1}>
+        {item.item}
+      </Text>
+      <EnterSearchBar setItem={setItem}>
+        <Input variant="filled" datalist={["mark", "bob"]} roundedBottom="lg" />
+        <Button variant="outline" shadow={"none"}>
+          Search
+        </Button>
+      </EnterSearchBar>
+    </MenuedPage>
   );
 };
 

@@ -10,7 +10,7 @@ import {
   InputLeftElement,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const searchTerms = [
   "a",
@@ -33,10 +33,25 @@ const searchTerms = [
 ];
 
 const EnterSearchBar = ({ setItem, children }) => {
+  const ref = useRef(null);
   const [value, setValue] = useState("");
   const handleValueChange = (event) => setValue(event.target.value);
 
   const [searchValues, setSearchValues] = useState([]);
+
+  useEffect(() => {
+    const checkIfClickedOutside = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        setSearchValues([]);
+      }
+    };
+
+    document.addEventListener("mousedown", checkIfClickedOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", checkIfClickedOutside);
+    };
+  }, []);
 
   useEffect(() => {
     const newSearchValues = [];
@@ -71,7 +86,7 @@ const EnterSearchBar = ({ setItem, children }) => {
     }
   };
 
-  const enterInput = React.Children.map(children, (child) => {
+  const updatedChildren = React.Children.map(children, (child) => {
     if (React.isValidElement(child) && child.type === Input) {
       return React.cloneElement(child, {
         onKeyPress: enterSearch,
@@ -81,6 +96,13 @@ const EnterSearchBar = ({ setItem, children }) => {
         onChange: handleValueChange,
       });
     }
+
+    if (React.isValidElement(child) && child.type === Button) {
+      return React.cloneElement(child, {
+        onClick: () => search(value),
+      });
+    }
+
     return child;
   });
 
@@ -91,11 +113,14 @@ const EnterSearchBar = ({ setItem, children }) => {
     return (
       <Box
         borderWidth="1px"
-        borderRadius="lg"
+        roundedBottom="lg"
         w="100%"
         p={4}
         color="black"
+        backgroundColor={"pink"}
         hidden={searchValues.length <= 0}
+        zIndex={20}
+        ref={ref}
       >
         <List spacing={2}>{searchValues}</List>
       </Box>
@@ -104,7 +129,7 @@ const EnterSearchBar = ({ setItem, children }) => {
 
   return (
     <>
-      <InputGroup>
+      <InputGroup ref={ref}>
         <InputLeftElement onClick={() => search(value)}>
           <IconButton
             aria-label=""
@@ -113,12 +138,14 @@ const EnterSearchBar = ({ setItem, children }) => {
             _hover="ghost"
           />
         </InputLeftElement>
-        {enterInput}
+        {updatedChildren.find(
+          (element) => element.type.render?.displayName === "Input"
+        )}
       </InputGroup>
       {searchDropDown()}
-      <Button onClick={() => search(value)} variant="outline">
-        Search
-      </Button>
+      {updatedChildren.find(
+        (element) => element.type.render?.displayName === "Button"
+      )}
     </>
   );
 };
