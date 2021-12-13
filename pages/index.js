@@ -1,6 +1,6 @@
-import { Input, Button } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
 import { Text } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { Input, Button, CircularProgress } from "@chakra-ui/react";
 
 import { fetcher } from "../utils/fetcher";
 
@@ -16,15 +16,15 @@ const Home = () => {
     });
   }, []);
 
-  if (!item) {
-    return <div>Loading Dealership Api</div>;
-  }
-
   return (
-    <MenuedPage>
-      <Text fontSize="6xl" zIndex={1}>
-        {item.item}
-      </Text>
+    <MenuedPage mt={"250"}>
+      {!item.item ? (
+        <CircularProgress isIndeterminate />
+      ) : (
+        <Text fontSize="6xl" zIndex={1}>
+          {item.item}
+        </Text>
+      )}
       <EnterSearchBar>
         <Input autoFocus variant="filled" />
         <Button variant="outline" shadow={"none"}>

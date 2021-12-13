@@ -1,8 +1,6 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import { ListItem, ListIcon } from "@chakra-ui/react";
 
-import Search from "./Search";
-
 const fakeReturn = [
   "a",
   "as",
@@ -23,18 +21,22 @@ const fakeReturn = [
   "oiewqurpoiuwefpijdspfihasdpfh",
 ];
 
-const DropDownSearch = (value) => {
+const DropDownSearch = (value, router, setIsSearch) => {
   const newSearchValues = [];
+
+  const onClick = (item) => {
+    if (setIsSearch) {
+      setIsSearch(false);
+    }
+
+    router.push(`/search/${item}`);
+  };
 
   fakeReturn.forEach((item) => {
     if (item.includes(value.toLocaleLowerCase()) && value != "") {
       newSearchValues.push(
-        <ListItem
-          onClick={() => Search(item)}
-          _hover={{ cursor: "pointer" }}
-          key={item}
-        >
-          <ListIcon as={SearchIcon} />
+        <ListItem onClick={() => onClick(item)} _hover={{ cursor: "pointer" }}>
+          <ListIcon onClick={() => onClick(item)} as={SearchIcon} />
           {item}
         </ListItem>
       );

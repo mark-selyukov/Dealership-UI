@@ -1,9 +1,11 @@
+import { Text } from "@chakra-ui/react";
+
 import MenuedPage from "../components/MenuedPage";
 
 const Dealerships = () => {
   return (
     <MenuedPage>
-      <div>Dealerships</div>
+      <Text>Dealerships</Text>
     </MenuedPage>
   );
 };

@@ -12,6 +12,11 @@ import { useEffect, useRef, useState } from "react";
 
 import EnterSearchBar from "./EnterSearchBar";
 
+const textProps = {
+  fontSize: "2xl",
+  _hover: { cursor: "pointer" },
+};
+
 const containerProps = {
   maxW: "100%",
   zIndex: "200",
@@ -69,13 +74,13 @@ const MenuBar = () => {
           spacing={{ sm: "20px", md: "30px", lg: "40px", xl: "50px" }}
         >
           <Link href="/">
-            <Text fontSize="2xl">Home</Text>
+            <Text {...textProps}>Home</Text>
           </Link>
           <Link href="cars">
-            <Text fontSize="2xl">Cars</Text>
+            <Text {...textProps}>Cars</Text>
           </Link>
           <Link href="dealerships">
-            <Text fontSize="2xl">Dealerships</Text>
+            <Text {...textProps}>Dealerships</Text>
           </Link>
           <IconButton {...iconButtonProps} onClick={() => setIsSearch(true)} />
         </HStack>
@@ -87,7 +92,7 @@ const MenuBar = () => {
     return (
       <Container {...containerProps} ref={ref}>
         <VStack {...stackProps} {...vStackProps}>
-          <EnterSearchBar>
+          <EnterSearchBar setIsSearch={setIsSearch}>
             <Input {...inputProps} autoFocus />
           </EnterSearchBar>
         </VStack>

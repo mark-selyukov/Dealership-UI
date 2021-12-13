@@ -8,10 +8,10 @@ import {
   InputLeftElement,
   Container,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { SearchIcon } from "@chakra-ui/icons";
 import React, { useEffect, useRef, useState } from "react";
 
-import Search from "../utils/Search";
 import DropDownSearch from "../utils/DropDownSearch";
 
 const boxProps = {
@@ -30,8 +30,9 @@ const iconButtonProps = {
   _hover: "ghost",
 };
 
-const EnterSearchBar = ({ children }) => {
+const EnterSearchBar = ({ setIsSearch, children }) => {
   const ref = useRef(null);
+  const router = useRouter();
   const [value, setValue] = useState("");
   const handleValueChange = (event) => setValue(event.target.value);
 
@@ -58,20 +59,29 @@ const EnterSearchBar = ({ children }) => {
 
   useEffect(() => {
     //question: do I want to do it like this or would it be better if I had returned the values themselves and mapped them in the useEffect?
-    const newSearchValues = DropDownSearch(value);
+    //1. I can break it down into just getting the values and then creating the whole element here
+    //2. I could have the forEach loop in here and then a function that just maps things.
+    //3. Now that I typed out my questions and worked on this a bit more it looks like the best way to do this would be to just have it be #2 but moving the function into this component.
+    //   I feel as though moving things out into a separate file makes things look cleaner but I am not sure how true that is and if it would cause more confusion down the road
+    const newSearchValues = DropDownSearch(value, router, setIsSearch);
 
     setSearchValues(newSearchValues);
   }, [value, setValue, setSearchValues]);
 
+  const search = () => {
+    router.push(`/search/${value}`);
+  };
+
   const enterSearch = (e) => {
     if (e.key === "Enter") {
-      Search(value);
+      search(e);
     }
   };
 
   const updatedChildren = React.Children.map(children, (child) => {
     if (React.isValidElement(child) && child.type === Input) {
       return React.cloneElement(child, {
+        autoComplete: "off",
         value: value,
         type: "search",
         id: "searchBar",
@@ -83,7 +93,7 @@ const EnterSearchBar = ({ children }) => {
 
     if (React.isValidElement(child) && child.type === Button) {
       return React.cloneElement(child, {
-        onClick: () => Search(value),
+        onClick: () => search(),
         id: "searchButton",
       });
     }
@@ -105,7 +115,7 @@ const EnterSearchBar = ({ children }) => {
   return (
     <Container maxW="60%" centerContent>
       <InputGroup ref={ref}>
-        <InputLeftElement onClick={() => Search(value)}>
+        <InputLeftElement onClick={() => search()}>
           <IconButton {...iconButtonProps} />
         </InputLeftElement>
         {updatedChildren.find(

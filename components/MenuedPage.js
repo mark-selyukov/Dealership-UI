@@ -3,11 +3,11 @@ import { Container } from "@chakra-ui/react";
 
 import MenuBar from "./MenuBar";
 
-const MenuedPage = ({ children }) => {
+const MenuedPage = ({ children, mt = "50" }) => {
   const searchBar = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
       return React.cloneElement(child, {
-        mt: "250",
+        mt: mt,
       });
     }
     return child;
