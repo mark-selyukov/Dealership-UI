@@ -1,4 +1,3 @@
-import { SearchIcon } from "@chakra-ui/icons";
 import {
   Container,
   Text,
@@ -7,9 +6,42 @@ import {
   IconButton,
   Input,
 } from "@chakra-ui/react";
+import Link from "next/link";
+import { SearchIcon } from "@chakra-ui/icons";
 import { useEffect, useRef, useState } from "react";
 
 import EnterSearchBar from "./EnterSearchBar";
+
+const containerProps = {
+  maxW: "100%",
+  zIndex: "200",
+  backgroundColor: "gray",
+  style: { position: "fixed", top: 0 },
+};
+
+const stackProps = {
+  height: "50px",
+  zIndex: "200",
+};
+
+const vStackProps = {
+  spacing: "0",
+  paddingTop: "5px",
+  paddingLeft: "15%",
+  paddingRight: "15%",
+};
+
+const inputProps = {
+  variant: "filled",
+  focusBorderColor: "none",
+  _focus: { backgroundColor: "white" },
+};
+
+const iconButtonProps = {
+  variant: "ghost",
+  icon: <SearchIcon />,
+  _hover: "ghost",
+};
 
 const MenuBar = () => {
   const ref = useRef(null);
@@ -31,28 +63,21 @@ const MenuBar = () => {
 
   const menuBar = () => {
     return (
-      <Container
-        maxW="100%"
-        zIndex="200"
-        backgroundColor="gray"
-        style={{ position: "fixed", top: 0 }}
-        centerContent
-      >
+      <Container {...containerProps} centerContent>
         <HStack
+          {...stackProps}
           spacing={{ sm: "20px", md: "30px", lg: "40px", xl: "50px" }}
-          height="50px"
-          zIndex={200}
         >
-          <Text fontSize="2xl">Home</Text>
-          <Text fontSize="2xl">Cars</Text>
-          <Text fontSize="2xl">Dealerships</Text>
-          <IconButton
-            onClick={() => setIsSearch(true)}
-            aria-label=""
-            variant="ghost"
-            icon={<SearchIcon />}
-            _hover="ghost"
-          />
+          <Link href="/">
+            <Text fontSize="2xl">Home</Text>
+          </Link>
+          <Link href="cars">
+            <Text fontSize="2xl">Cars</Text>
+          </Link>
+          <Link href="dealerships">
+            <Text fontSize="2xl">Dealerships</Text>
+          </Link>
+          <IconButton {...iconButtonProps} onClick={() => setIsSearch(true)} />
         </HStack>
       </Container>
     );
@@ -60,27 +85,10 @@ const MenuBar = () => {
 
   const searchBar = () => {
     return (
-      <Container
-        maxW="100%"
-        zIndex="200"
-        backgroundColor="gray"
-        style={{ position: "fixed", top: 0 }}
-        ref={ref}
-      >
-        <VStack
-          height="50px"
-          spacing={0}
-          zIndex={200}
-          paddingTop={"5px"}
-          paddingLeft="30%"
-          paddingRight="30%"
-        >
+      <Container {...containerProps} ref={ref}>
+        <VStack {...stackProps} {...vStackProps}>
           <EnterSearchBar>
-            <Input
-              variant="filled"
-              focusBorderColor="none"
-              _focus={{ backgroundColor: "white" }}
-            />
+            <Input {...inputProps} autoFocus />
           </EnterSearchBar>
         </VStack>
       </Container>

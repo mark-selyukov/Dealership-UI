@@ -25,8 +25,8 @@ const Home = () => {
       <Text fontSize="6xl" zIndex={1}>
         {item.item}
       </Text>
-      <EnterSearchBar setItem={setItem}>
-        <Input variant="filled" datalist={["mark", "bob"]} roundedBottom="lg" />
+      <EnterSearchBar>
+        <Input autoFocus variant="filled" />
         <Button variant="outline" shadow={"none"}>
           Search
         </Button>

@@ -3,36 +3,34 @@ import {
   List,
   Input,
   Button,
-  ListItem,
-  ListIcon,
   IconButton,
   InputGroup,
   InputLeftElement,
+  Container,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import React, { useEffect, useRef, useState } from "react";
 
-const searchTerms = [
-  "a",
-  "as",
-  "asd",
-  "asdf",
-  "asdff",
-  "sadf",
-  "asdfasdfsd",
-  "asdfopiyasdfhkjlj",
-  "asdfasdf",
-  "dsfasdasdf",
-  "asdfweqds",
-  "asdfasd",
-  "asdfasdd",
-  "asdfasdfd",
-  "asdfasdfasdasdfasddddsadf",
-  "asedfhjpawoqieuyfhajskdnf",
-  "oiewqurpoiuwefpijdspfihasdpfh",
-];
+import Search from "../utils/Search";
+import DropDownSearch from "../utils/DropDownSearch";
 
-const EnterSearchBar = ({ setItem, children }) => {
+const boxProps = {
+  borderWidth: "1px",
+  roundedBottom: "lg",
+  backgroundColor: "white",
+  w: "100%",
+  p: "4",
+  color: "black",
+  zIndex: "20",
+};
+
+const iconButtonProps = {
+  variant: "ghost",
+  icon: <SearchIcon />,
+  _hover: "ghost",
+};
+
+const EnterSearchBar = ({ children }) => {
   const ref = useRef(null);
   const [value, setValue] = useState("");
   const handleValueChange = (event) => setValue(event.target.value);
@@ -41,7 +39,12 @@ const EnterSearchBar = ({ setItem, children }) => {
 
   useEffect(() => {
     const checkIfClickedOutside = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) {
+      if (
+        ref.current &&
+        !ref.current.contains(e.target) &&
+        e.target.id !== "searchButton" &&
+        e.target.id !== "searchBar"
+      ) {
         setSearchValues([]);
       }
     };
@@ -54,52 +57,34 @@ const EnterSearchBar = ({ setItem, children }) => {
   }, []);
 
   useEffect(() => {
-    const newSearchValues = [];
-
-    searchTerms.forEach((item) => {
-      if (item.includes(value.toLocaleLowerCase()) && value != "") {
-        newSearchValues.push(
-          <ListItem
-            onClick={() => search(item)}
-            _hover={{ cursor: "pointer" }}
-            key={item}
-          >
-            <ListIcon as={SearchIcon} />
-            {item}
-          </ListItem>
-        );
-      }
-    });
+    //question: do I want to do it like this or would it be better if I had returned the values themselves and mapped them in the useEffect?
+    const newSearchValues = DropDownSearch(value);
 
     setSearchValues(newSearchValues);
   }, [value, setValue, setSearchValues]);
 
-  const search = (value) => {
-    if (value.length > 0) {
-      setItem({ item: value });
-    }
-  };
-
   const enterSearch = (e) => {
     if (e.key === "Enter") {
-      search(value);
+      Search(value);
     }
   };
 
   const updatedChildren = React.Children.map(children, (child) => {
     if (React.isValidElement(child) && child.type === Input) {
       return React.cloneElement(child, {
-        onKeyPress: enterSearch,
-        placeholder: "Search",
-        type: "search",
         value: value,
+        type: "search",
+        id: "searchBar",
+        placeholder: "Search",
+        onKeyPress: enterSearch,
         onChange: handleValueChange,
       });
     }
 
     if (React.isValidElement(child) && child.type === Button) {
       return React.cloneElement(child, {
-        onClick: () => search(value),
+        onClick: () => Search(value),
+        id: "searchButton",
       });
     }
 
@@ -111,32 +96,17 @@ const EnterSearchBar = ({ setItem, children }) => {
       return null;
     }
     return (
-      <Box
-        borderWidth="1px"
-        roundedBottom="lg"
-        w="100%"
-        p={4}
-        color="black"
-        backgroundColor={"pink"}
-        hidden={searchValues.length <= 0}
-        zIndex={20}
-        ref={ref}
-      >
+      <Box {...boxProps} hidden={searchValues.length <= 0} ref={ref}>
         <List spacing={2}>{searchValues}</List>
       </Box>
     );
   };
 
   return (
-    <>
+    <Container maxW="60%" centerContent>
       <InputGroup ref={ref}>
-        <InputLeftElement onClick={() => search(value)}>
-          <IconButton
-            aria-label=""
-            variant="ghost"
-            icon={<SearchIcon />}
-            _hover="ghost"
-          />
+        <InputLeftElement onClick={() => Search(value)}>
+          <IconButton {...iconButtonProps} />
         </InputLeftElement>
         {updatedChildren.find(
           (element) => element.type.render?.displayName === "Input"
@@ -146,7 +116,7 @@ const EnterSearchBar = ({ setItem, children }) => {
       {updatedChildren.find(
         (element) => element.type.render?.displayName === "Button"
       )}
-    </>
+    </Container>
   );
 };
 
