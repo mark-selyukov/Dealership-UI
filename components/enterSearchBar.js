@@ -31,7 +31,7 @@ const iconButtonProps = {
 };
 
 const EnterSearchBar = ({ setIsSearch, children }) => {
-  const ref = useRef(null);
+  const ref = useRef();
   const router = useRouter();
   const [value, setValue] = useState("");
   const handleValueChange = (event) => setValue(event.target.value);

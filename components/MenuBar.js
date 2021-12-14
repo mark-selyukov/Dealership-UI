@@ -49,7 +49,7 @@ const iconButtonProps = {
 };
 
 const MenuBar = () => {
-  const ref = useRef(null);
+  const ref = useRef();
   const [isSearch, setIsSearch] = useState(false);
 
   useEffect(() => {

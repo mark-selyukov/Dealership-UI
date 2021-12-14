@@ -18,16 +18,16 @@ const Home = () => {
 
   return (
     <MenuedPage mt="250">
-      {!item.item ? (
-        <CircularProgress isIndeterminate />
-      ) : (
-        <Text fontSize="6xl" zIndex={1}>
+      {item?.item ? (
+        <Text fontSize="6xl" zIndex="1">
           {item.item}
         </Text>
+      ) : (
+        <CircularProgress isIndeterminate />
       )}
       <EnterSearchBar>
         <Input autoFocus variant="filled" />
-        <Button variant="outline" shadow={"none"}>
+        <Button variant="outline" shadow="none">
           Search
         </Button>
       </EnterSearchBar>
