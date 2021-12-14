@@ -1,16 +1,24 @@
 import {
+  memo,
+  useRef,
+  useState,
+  Children,
+  useEffect,
+  cloneElement,
+  isValidElement,
+} from "react";
+import {
   Box,
   List,
   Input,
   Button,
+  Container,
   IconButton,
   InputGroup,
   InputLeftElement,
-  Container,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { SearchIcon } from "@chakra-ui/icons";
-import React, { useEffect, useRef, useState } from "react";
 
 import DropDownSearch from "../utils/DropDownSearch";
 
@@ -74,13 +82,13 @@ const EnterSearchBar = ({ setIsSearch, children }) => {
 
   const enterSearch = (e) => {
     if (e.key === "Enter") {
-      search(e);
+      search();
     }
   };
 
-  const updatedChildren = React.Children.map(children, (child) => {
-    if (React.isValidElement(child) && child.type === Input) {
-      return React.cloneElement(child, {
+  const updatedChildren = Children.map(children, (child) => {
+    if (isValidElement(child) && child.type === Input) {
+      return cloneElement(child, {
         autoComplete: "off",
         value: value,
         type: "search",
@@ -91,8 +99,8 @@ const EnterSearchBar = ({ setIsSearch, children }) => {
       });
     }
 
-    if (React.isValidElement(child) && child.type === Button) {
-      return React.cloneElement(child, {
+    if (isValidElement(child) && child.type === Button) {
+      return cloneElement(child, {
         onClick: () => search(),
         id: "searchButton",
       });
@@ -112,17 +120,19 @@ const EnterSearchBar = ({ setIsSearch, children }) => {
     );
   };
 
+  const MemoizedSearchDropDown = memo(searchDropDown);
+
   return (
     <Container maxW="60%" centerContent>
       <InputGroup ref={ref}>
-        <InputLeftElement onClick={() => search()}>
+        <InputLeftElement onClick={() => search}>
           <IconButton {...iconButtonProps} />
         </InputLeftElement>
         {updatedChildren.find(
           (element) => element.type.render?.displayName === "Input"
         )}
       </InputGroup>
-      {searchDropDown()}
+      <MemoizedSearchDropDown />
       {updatedChildren.find(
         (element) => element.type.render?.displayName === "Button"
       )}

@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { SearchIcon } from "@chakra-ui/icons";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 
 import EnterSearchBar from "./EnterSearchBar";
 
@@ -66,29 +66,7 @@ const MenuBar = () => {
     };
   }, [isSearch]);
 
-  const menuBar = () => {
-    return (
-      <Container {...containerProps} centerContent>
-        <HStack
-          {...stackProps}
-          spacing={{ sm: "20px", md: "30px", lg: "40px", xl: "50px" }}
-        >
-          <Link href="/">
-            <Text {...textProps}>Home</Text>
-          </Link>
-          <Link href="cars">
-            <Text {...textProps}>Cars</Text>
-          </Link>
-          <Link href="dealerships">
-            <Text {...textProps}>Dealerships</Text>
-          </Link>
-          <IconButton {...iconButtonProps} onClick={() => setIsSearch(true)} />
-        </HStack>
-      </Container>
-    );
-  };
-
-  const searchBar = () => {
+  if (isSearch) {
     return (
       <Container {...containerProps} ref={ref}>
         <VStack {...stackProps} {...vStackProps}>
@@ -98,9 +76,29 @@ const MenuBar = () => {
         </VStack>
       </Container>
     );
-  };
+  }
 
-  return isSearch ? searchBar() : menuBar();
+  return (
+    <Container {...containerProps} centerContent>
+      <HStack
+        {...stackProps}
+        spacing={{ sm: "20px", md: "30px", lg: "40px", xl: "50px" }}
+      >
+        <Link href="/">
+          <Text {...textProps}>Home</Text>
+        </Link>
+        <Link href="cars">
+          <Text {...textProps}>Cars</Text>
+        </Link>
+        <Link href="dealerships">
+          <Text {...textProps}>Dealerships</Text>
+        </Link>
+        <IconButton {...iconButtonProps} onClick={() => setIsSearch(true)} />
+      </HStack>
+    </Container>
+  );
 };
 
-export default MenuBar;
+const MemoizedMenuBar = memo(MenuBar);
+
+export default MemoizedMenuBar;
