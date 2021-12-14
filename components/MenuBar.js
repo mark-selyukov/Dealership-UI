@@ -10,7 +10,7 @@ import Link from "next/link";
 import { SearchIcon } from "@chakra-ui/icons";
 import { useEffect, useRef, useState } from "react";
 
-import EnterSearchBar from "./EnterSearchBar1";
+import EnterSearchBar from "./EnterSearchBar";
 
 const textProps = {
   fontSize: "2xl",

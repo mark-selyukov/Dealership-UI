@@ -5,7 +5,7 @@ import { Input, Button, CircularProgress } from "@chakra-ui/react";
 import { fetcher } from "../utils/fetcher";
 
 import MenuedPage from "../components/MenuedPage";
-import EnterSearchBar from "../components/EnterSearchBar1";
+import EnterSearchBar from "../components/EnterSearchBar";
 
 const Home = () => {
   const [item, setItem] = useState("");
