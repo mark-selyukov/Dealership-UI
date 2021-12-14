@@ -100,7 +100,7 @@ const MenuBar = () => {
     );
   };
 
-  return !isSearch ? menuBar() : searchBar();
+  return isSearch ? searchBar() : menuBar();
 };
 
 export default MenuBar;

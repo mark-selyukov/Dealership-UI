@@ -17,7 +17,7 @@ const Home = () => {
   }, []);
 
   return (
-    <MenuedPage mt={"250"}>
+    <MenuedPage mt="250">
       {!item.item ? (
         <CircularProgress isIndeterminate />
       ) : (

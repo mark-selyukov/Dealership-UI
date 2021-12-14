@@ -1,6 +1,6 @@
 const routes = (apiRoute) => {
   const allApiRoutes = {
-    dealership: process.env.DEALERSHIPAPI,
+    dealership: process.env.DEALERSHIP_API,
   };
 
   return allApiRoutes[apiRoute];
