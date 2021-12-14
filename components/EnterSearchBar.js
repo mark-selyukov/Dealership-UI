@@ -77,7 +77,10 @@ const EnterSearchBar = ({ setIsSearch, children }) => {
   }, [value, setValue, setSearchValues]);
 
   const search = () => {
-    router.push(`/search/${value}`);
+    const trimmedSearch = value.trim();
+    if (value.toLocaleLowerCase !== "search" && trimmedSearch) {
+      router.push(`/search/${trimmedSearch}`);
+    }
   };
 
   const enterSearch = (e) => {
@@ -120,22 +123,30 @@ const EnterSearchBar = ({ setIsSearch, children }) => {
     );
   };
 
-  const MemoizedSearchDropDown = memo(searchDropDown);
+  const MemoizedSearchButton = memo(() => {
+    const button = updatedChildren.find(
+      (element) => element.type.render?.displayName === "Button"
+    );
+
+    if (button) {
+      return button;
+    }
+
+    return null;
+  });
 
   return (
     <Container maxW="60%" centerContent>
       <InputGroup ref={ref}>
-        <InputLeftElement onClick={() => search}>
+        <InputLeftElement onClick={() => search()}>
           <IconButton {...iconButtonProps} />
         </InputLeftElement>
         {updatedChildren.find(
           (element) => element.type.render?.displayName === "Input"
         )}
       </InputGroup>
-      <MemoizedSearchDropDown />
-      {updatedChildren.find(
-        (element) => element.type.render?.displayName === "Button"
-      )}
+      {searchDropDown()}
+      <MemoizedSearchButton />
     </Container>
   );
 };
