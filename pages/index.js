@@ -16,6 +16,14 @@ const Home = () => {
     });
   }, []);
 
+  const SearchInput = <Input autoFocus variant="filled" />;
+
+  const SearchButton = (
+    <Button variant="outline" shadow="none">
+      Search
+    </Button>
+  );
+
   return (
     <MenuedPage mt="250">
       {item?.item ? (
@@ -25,12 +33,10 @@ const Home = () => {
       ) : (
         <CircularProgress isIndeterminate />
       )}
-      <EnterSearchBar>
-        <Input autoFocus variant="filled" />
-        <Button variant="outline" shadow="none">
-          Search
-        </Button>
-      </EnterSearchBar>
+      <EnterSearchBar
+        SearchInput={SearchInput}
+        SearchButton={SearchButton}
+      ></EnterSearchBar>
     </MenuedPage>
   );
 };

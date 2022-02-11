@@ -1,17 +1,9 @@
-import {
-  memo,
-  useRef,
-  useState,
-  Children,
-  useEffect,
-  cloneElement,
-  isValidElement,
-} from "react";
+import { memo, useRef, useState, useEffect, cloneElement } from "react";
 import {
   Box,
   List,
-  Input,
-  Button,
+  ListItem,
+  ListIcon,
   Container,
   IconButton,
   InputGroup,
@@ -19,8 +11,6 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { SearchIcon } from "@chakra-ui/icons";
-
-import DropDownSearch from "../utils/DropDownSearch";
 
 const boxProps = {
   borderWidth: "1px",
@@ -38,7 +28,27 @@ const iconButtonProps = {
   _hover: "ghost",
 };
 
-const EnterSearchBar = ({ setIsSearch, children }) => {
+const fakeReturn = [
+  "a",
+  "as",
+  "asd",
+  "asdf",
+  "asdff",
+  "sadf",
+  "asdfasdfsd",
+  "asdfopiyasdfhkjlj",
+  "asdfasdf",
+  "dsfasdasdf",
+  "asdfweqds",
+  "asdfasd",
+  "asdfasdd",
+  "asdfasdfd",
+  "asdfasdfasdasdfasddddsadf",
+  "asedfhjpawoqieuyfhajskdnf",
+  "oiewqurpoiuwefpijdspfihasdpfh",
+];
+
+const EnterSearchBar = ({ setIsSearch, SearchInput, SearchButton }) => {
   const ref = useRef();
   const router = useRouter();
   const [value, setValue] = useState("");
@@ -66,12 +76,29 @@ const EnterSearchBar = ({ setIsSearch, children }) => {
   }, []);
 
   useEffect(() => {
-    //question: do I want to do it like this or would it be better if I had returned the values themselves and mapped them in the useEffect?
-    //1. I can break it down into just getting the values and then creating the whole element here
-    //2. I could have the forEach loop in here and then a function that just maps things.
-    //3. Now that I typed out my questions and worked on this a bit more it looks like the best way to do this would be to just have it be #2 but moving the function into this component.
-    //   I feel as though moving things out into a separate file makes things look cleaner but I am not sure how true that is and if it would cause more confusion down the road
-    const newSearchValues = DropDownSearch(value, router, setIsSearch);
+    const newSearchValues = [];
+
+    const onClick = (item) => {
+      if (setIsSearch) {
+        setIsSearch(false);
+      }
+
+      router.push(`/search/${item}`);
+    };
+
+    fakeReturn.forEach((item) => {
+      if (item.includes(value.toLocaleLowerCase()) && value != "") {
+        newSearchValues.push(
+          <ListItem
+            onClick={() => onClick(item)}
+            _hover={{ cursor: "pointer" }}
+          >
+            <ListIcon onClick={() => onClick(item)} as={SearchIcon} />
+            {item}
+          </ListItem>
+        );
+      }
+    });
 
     setSearchValues(newSearchValues);
   }, [value, setValue, setSearchValues]);
@@ -89,29 +116,6 @@ const EnterSearchBar = ({ setIsSearch, children }) => {
     }
   };
 
-  const updatedChildren = Children.map(children, (child) => {
-    if (isValidElement(child) && child.type === Input) {
-      return cloneElement(child, {
-        autoComplete: "off",
-        value: value,
-        type: "search",
-        id: "searchBar",
-        placeholder: "Search",
-        onKeyPress: enterSearch,
-        onChange: handleValueChange,
-      });
-    }
-
-    if (isValidElement(child) && child.type === Button) {
-      return cloneElement(child, {
-        onClick: () => search(),
-        id: "searchButton",
-      });
-    }
-
-    return child;
-  });
-
   const searchDropDown = () => {
     if (searchValues.length <= 0) {
       return null;
@@ -123,27 +127,34 @@ const EnterSearchBar = ({ setIsSearch, children }) => {
     );
   };
 
-  const MemoizedSearchButton = memo(() => {
-    const button = updatedChildren.find(
-      (element) => element.type.render?.displayName === "Button"
-    );
+  const NewSearchInput = cloneElement(SearchInput, {
+    autoComplete: "off",
+    value: value,
+    type: "search",
+    id: "searchBar",
+    placeholder: "Search",
+    onKeyUp: enterSearch,
+    onChange: handleValueChange,
+  });
 
-    if (button) {
-      return button;
+  const MemoizedSearchButton = memo(() => {
+    if (!SearchButton) {
+      return null;
     }
 
-    return null;
+    return cloneElement(SearchButton, {
+      onClick: () => search(),
+      id: "searchButton",
+    });
   });
 
   return (
     <Container maxW="60%" centerContent>
       <InputGroup ref={ref}>
-        <InputLeftElement onClick={() => search()}>
+        <InputLeftElement onClick={search}>
           <IconButton {...iconButtonProps} />
         </InputLeftElement>
-        {updatedChildren.find(
-          (element) => element.type.render?.displayName === "Input"
-        )}
+        {NewSearchInput}
       </InputGroup>
       {searchDropDown()}
       <MemoizedSearchButton />

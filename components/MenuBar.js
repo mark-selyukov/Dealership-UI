@@ -70,9 +70,10 @@ const MenuBar = () => {
     return (
       <Container {...containerProps} ref={ref}>
         <VStack {...stackProps} {...vStackProps}>
-          <EnterSearchBar setIsSearch={setIsSearch}>
-            <Input {...inputProps} autoFocus />
-          </EnterSearchBar>
+          <EnterSearchBar
+            setIsSearch={setIsSearch}
+            SearchInput={<Input {...inputProps} autoFocus />}
+          />
         </VStack>
       </Container>
     );
