@@ -1,9 +1,11 @@
-import { Input } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { Container, Text } from "@chakra-ui/react";
+import { Input, Button, CircularProgress } from "@chakra-ui/react";
 
 import { fetcher } from "../utils/fetcher";
-import EnterSearchBar from "../components/enterSearchBar";
+
+import MenuedPage from "../components/MenuedPage";
+import EnterSearchBar from "../components/EnterSearchBar";
 
 const Home = () => {
   const [item, setItem] = useState("");
@@ -14,19 +16,28 @@ const Home = () => {
     });
   }, []);
 
-  if (!item) {
-    return <div>Loading Dealership Api</div>;
-  }
+  const SearchInput = <Input autoFocus variant="filled" />;
+
+  const SearchButton = (
+    <Button variant="outline" shadow="none">
+      Search
+    </Button>
+  );
 
   return (
-    <>
-      <Container maxW="container.xl" centerContent>
-        <Text fontSize="6xl">{item.item}</Text>
-        <EnterSearchBar setItem={setItem}>
-          <Input variant="filled" />
-        </EnterSearchBar>
-      </Container>
-    </>
+    <MenuedPage mt="250">
+      {item?.item ? (
+        <Text fontSize="6xl" zIndex="1">
+          {item.item}
+        </Text>
+      ) : (
+        <CircularProgress isIndeterminate />
+      )}
+      <EnterSearchBar
+        SearchInput={SearchInput}
+        SearchButton={SearchButton}
+      ></EnterSearchBar>
+    </MenuedPage>
   );
 };
 

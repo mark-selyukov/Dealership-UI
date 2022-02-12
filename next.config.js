@@ -21,7 +21,8 @@ module.exports = (phase) => {
   // next.config.js object
   return {
     env: {
-      DEALERSHIPAPI: process.env.DEALERSHIPAPI,
+      DEALERSHIP_API: process.env.DEALERSHIPAPI,
     },
+    reactStrictMode: true,
   };
 };
