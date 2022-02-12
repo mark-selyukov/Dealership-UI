@@ -103,16 +103,17 @@ const EnterSearchBar = ({ setIsSearch, SearchInput, SearchButton }) => {
     setSearchValues(newSearchValues);
   }, [value, setValue, setSearchValues]);
 
-  const search = () => {
-    const trimmedSearch = value.trim();
-    if (value.toLocaleLowerCase !== "search" && trimmedSearch) {
+  const search = (searchValue) => {
+    const trimmedSearch = searchValue.trim();
+    if (searchValue.toLocaleLowerCase !== "search" && trimmedSearch) {
       router.push(`/search/${trimmedSearch}`);
     }
   };
 
   const enterSearch = (e) => {
     if (e.key === "Enter") {
-      search();
+      search(value);
+      setSearchValues("");
     }
   };
 
