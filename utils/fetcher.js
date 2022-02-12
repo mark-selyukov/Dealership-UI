@@ -1,5 +1,4 @@
 //Fetcher for making calls out to apis
-import fetch from "node-fetch";
 import * as apiCalls from "../pages/api/index";
 import routes from "../utils/routes";
 
