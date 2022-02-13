@@ -113,8 +113,10 @@ const EnterSearchBar = ({ setIsSearch, SearchInput, SearchButton }) => {
   const enterSearch = (e) => {
     if (e.key === "Enter") {
       search(value);
-      setIsSearch(false);
       setSearchValues("");
+      if (setIsSearch) {
+        setIsSearch(false);
+      }
     }
   };
 

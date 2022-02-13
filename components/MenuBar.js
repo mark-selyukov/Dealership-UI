@@ -73,7 +73,6 @@ const MenuBar = () => {
           <EnterSearchBar
             setIsSearch={setIsSearch}
             SearchInput={<Input {...inputProps} autoFocus />}
-            setIsSearch={setIsSearch}
           />
         </VStack>
       </Container>
