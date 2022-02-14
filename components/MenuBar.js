@@ -88,10 +88,10 @@ const MenuBar = () => {
         <Link href="/">
           <Text {...textProps}>Home</Text>
         </Link>
-        <Link href="cars">
+        <Link href="/cars">
           <Text {...textProps}>Cars</Text>
         </Link>
-        <Link href="dealerships">
+        <Link href="/dealerships">
           <Text {...textProps}>Dealerships</Text>
         </Link>
         <IconButton {...iconButtonProps} onClick={() => setIsSearch(true)} />
